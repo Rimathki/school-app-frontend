@@ -1,33 +1,31 @@
 'use client'
 import React from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '../ui/button'
 
 const Hero = () => {
-    const router = useRouter();
     return (
-        <div className="relative isolate max-h-screen">
-            <svg
-                className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-                aria-hidden="true"
-            >
-                <defs>
-                    <pattern id="0787a7c5-978c-4f66-83c7-11c213f99cb7" width="200" height="200" x="50%" y="-1"
-                        patternUnits="userSpaceOnUse">
-                        <path d="M.5 200V.5H200" fill="none"></path>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" strokeWidth="0" fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)"></rect>
-            </svg>
-            <div className="py-24 sm:py-24 lg:pb-40">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                    <div className="mx-auto max-w-2xl text-center">
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Another TailwindCSS Product</h1>
-                        <p className="mt-6 text-lg leading-8 text-gray-600">Description of the product and its features.</p>
-                        <div className="mt-10 flex items-center justify-center gap-x-6">
-                            <Button className='uppercase' onClick={() => router.push('/login')}>Login our system</Button>
-                        </div>
-                    </div>
+        <div className="relative overflow-hidden before:absolute before:top-0 before:start-1/2 before:bg-[url('https://preline.co/assets/svg/examples/polygon-bg-element.svg')] dark:before:bg-[url('https://preline.co/assets/svg/examples-dark/polygon-bg-element.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:size-full before:-z-[1] before:transform before:-translate-x-1/2">
+            <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+                <div className="flex justify-center">
+                    <a className="inline-flex items-center gap-x-2 bg-white border border-gray-200 text-sm text-gray-800 p-2 px-3 rounded-full transition hover:border-gray-300 focus:outline-none focus:border-gray-300 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-200 dark:hover:border-neutral-600 dark:focus:border-neutral-600" href="#">
+                        School quiz management system
+                    </a>
+                </div>
+                <div className="mt-5 max-w-3xl text-center mx-auto">
+                    <h1 className="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-neutral-200">
+                        Comprehensive School Quiz System
+                        <span className="bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent"> for Enhanced Learning</span>
+                    </h1>
+                </div>
+
+                <div className="mt-5 max-w-3xl text-center mx-auto">
+                    <p className="text-lg text-gray-600 dark:text-neutral-400">A school quiz system is an innovative digital platform designed to foster interactive and engaging learning experiences for students. It offers a structured environment for conducting quizzes across various subjects and skill levels, helping educators assess students knowledge and understanding effectively.</p>
+                </div>
+
+                <div className="mt-8 gap-3 flex justify-center">
+                    <a className="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 hover:from-violet-600 hover:to-blue-600 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:from-violet-600 focus:to-blue-600 py-3 px-4" href="/login">
+                        Login quiz system
+                        <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
                 </div>
             </div>
         </div>
