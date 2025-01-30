@@ -38,6 +38,7 @@ export interface Lesson {
     created_at: Date;
     created_by: string;
     topics: Topic[];
+    topic?: Topic[];
     creator: Creator;
 }
 
@@ -101,6 +102,18 @@ export interface TeachersResponse {
     total: number;
     pagination: Pagination;
 }
+
+export interface TeacherWithStudentsResponse {
+    success: boolean;
+    teacher: {
+      id: number;
+      firstname: string;
+      lastname: string;
+      email: string;
+      students: User[];
+    };
+  }
+  
 
 export interface StudentsResponse {
     students: Students[];

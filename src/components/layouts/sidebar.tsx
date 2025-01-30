@@ -6,7 +6,8 @@ import {
   LayoutGrid,
   SquareTerminal,
   Layers,
-  RefreshCcwDot
+  RefreshCcwDot,
+  GraduationCap
 } from "lucide-react"
 import { ROLE } from "@/utils/params"
 import { NavMain } from "@/components/layouts/navbar"
@@ -45,7 +46,7 @@ const data = {
         {
           title: "Quiz list",
           url: "/system/quiz",
-          role: [ROLE.admin]
+          role: [ROLE.admin, ROLE.teacher]
         }
       ],
     },  
@@ -56,6 +57,12 @@ const data = {
       url: "/system/user",
       icon: User,
       role: [ROLE.admin, ROLE.teacher]
+    },
+    {
+      name: "Students",
+      url: "/system/students",
+      icon: GraduationCap,
+      role: [ROLE.teacher]
     },
     {
       name: "Lesson",

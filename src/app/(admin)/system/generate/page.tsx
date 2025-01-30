@@ -196,8 +196,8 @@ const Page = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {ANSWERTYPE.map((option) => (
-                                                            <SelectItem key={option} value={option}>
+                                                        {ANSWERTYPE.map((option, index) => (
+                                                            <SelectItem key={index} value={option}>
                                                                 {option}
                                                             </SelectItem>
                                                         ))}
@@ -221,8 +221,8 @@ const Page = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {lessons.map((lesson) => (
-                                                            <SelectItem key={lesson.id} value={lesson.title}>
+                                                        {lessons.map((lesson, index) => (
+                                                            <SelectItem key={index} value={lesson.title}>
                                                                 {lesson.title}
                                                             </SelectItem>
                                                         ))}
@@ -246,8 +246,8 @@ const Page = () => {
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        {topics.map((topic) => (
-                                                            <SelectItem key={topic.id} value={topic.title}>
+                                                        {topics.map((topic, index) => (
+                                                            <SelectItem key={index} value={topic.title}>
                                                                 {topic.title}
                                                             </SelectItem>
                                                         ))}
@@ -272,8 +272,8 @@ const Page = () => {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            {QUIZ_NUMBER.map((number) => (
-                                                                <SelectItem key={number.number} value={String(number.number)}>
+                                                            {QUIZ_NUMBER.map((number, index) => (
+                                                                <SelectItem key={index} value={String(number.number)}>
                                                                     {number.value}
                                                                 </SelectItem>
                                                             ))}
@@ -299,8 +299,8 @@ const Page = () => {
                                                             </SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            {DURATION.map((time) => (
-                                                                <SelectItem key={time.time} value={String(time.time)}>
+                                                            {DURATION.map((time, index) => (
+                                                                <SelectItem key={index} value={String(time.time)}>
                                                                     {time.text}
                                                                 </SelectItem>
                                                             ))}
@@ -376,7 +376,7 @@ const Page = () => {
                                 <div className="px-6 py-5 space-y-6 min-h-[90%] max-h-[80%]">
                                     {isGeneratedQuiz.length > 0 ? (
                                         isGeneratedQuiz.map((quiz, index) => (
-                                            <div key={index} className="border rounded-lg p-4 shadow-md">
+                                            <div key={index || quiz.id} className="border rounded-lg p-4 shadow-md">
                                                 <h3 className="text-lg font-semibold mb-3">{quiz.question}</h3>
                                                 <ul className="space-y-2">
                                                     {quiz.options.map((option: string, i: number) => (

@@ -12,7 +12,7 @@ const QuizCard = ({  lesson, topic, duration, level, onButtonClick }: {
     onButtonClick: () => void 
 }) => {
     return (
-        <Card className="w-80 bg-white shadow-md rounded-lg">
+        <Card className="w-70 bg-white shadow-md rounded-lg">
             <CardHeader className="p-0">
                 <Image 
                 src={'/question.jpg'} 

@@ -1,7 +1,7 @@
 import { formatQuery } from '@/utils/format';
 import { api } from './api';
 import { RootState } from '@/lib/store'
-import { User, Role, UsersResponse, UserResponse, SuccessResponse, AssignRolePayload, TeachersResponse } from '@/utils/types';
+import { User, Role, UsersResponse, UserResponse, SuccessResponse, AssignRolePayload, TeachersResponse, TeacherWithStudentsResponse } from '@/utils/types';
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -133,6 +133,16 @@ export const userApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Teachers"],
     }),
+    getStudentsByTeacher: build.query<TeacherWithStudentsResponse, string>({
+      query: (teacherId) => `/core/teachers/${teacherId}/students`,
+      providesTags: (result, error, teacherId) =>
+        result?.teacher?.students
+          ? [
+              ...result.teacher.students.map(({ id }) => ({ type: "Students" as const, id })),
+              { type: "Students" as const, id: teacherId },
+            ]
+          : [{ type: "Students" as const, id: teacherId }],
+    }),    
   }),
   overrideExisting: true,
 });
@@ -149,5 +159,6 @@ export const {
   useAssignUserRoleMutation,
   useGetAllTeachersQuery,
   useAddStudentToTeacherMutation,
-  useRemoveStudentFromTeacherMutation
+  useRemoveStudentFromTeacherMutation,
+  useGetStudentsByTeacherQuery
 } = userApi;
