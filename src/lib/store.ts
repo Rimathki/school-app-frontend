@@ -27,7 +27,7 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware, rtkQueryErrorLogger),
-});
+}); 
 
 export default store;
 

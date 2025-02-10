@@ -8,7 +8,7 @@ import {
     CirclePlus
 } from 'lucide-react'
 import { Button } from "../ui/button";
-import { User, Lesson, Teachers, Quiz } from '@/utils/types';
+import { User, Lesson, Teachers, Quiz, Topic } from '@/utils/types';
 import { LEVEL } from "@/utils/params";
 
 const userColumns = (editHandler: (user: User) => void, deleteHandler: (userId: string) => void, changePassword: (user: User) => void, userAdditionalInfo: (user: User) => void): ColumnDef<User>[] => [
@@ -201,25 +201,25 @@ const lessonColumns = (editHandler: (lesson: Lesson) => void, deleteHandler: (le
         minSize: 150,
         maxSize: 150,
     },
-    {
-        id: "topic",
-        header: "Topic",
-        cell: ({ row }) => {
-            const lesson = row.original;
-            const lessonId = lesson.id
-            return(
-                <Button onClick={() => showTopic(lessonId)} className="text-sm text-slate-700 bg-green-200 hover:bg-green-300">
-                    Topic
-                </Button>
-            )
-        },
-        meta: {
-            className: 'text-center'
-        },
-        size: 50,
-        minSize: 50,
-        maxSize: 50,
-    },
+    // {
+    //     id: "topic",
+    //     header: "Topic",
+    //     cell: ({ row }) => {
+    //         const lesson = row.original;
+    //         const lessonId = lesson.id
+    //         return(
+    //             <Button onClick={() => showTopic(lessonId)} className="text-sm text-slate-700 bg-green-200 hover:bg-green-300">
+    //                 Topic
+    //             </Button>
+    //         )
+    //     },
+    //     meta: {
+    //         className: 'text-center'
+    //     },
+    //     size: 50,
+    //     minSize: 50,
+    //     maxSize: 50,
+    // },
     {
         id: "actions",
         header: "Actions",
@@ -265,99 +265,120 @@ const lessonColumns = (editHandler: (lesson: Lesson) => void, deleteHandler: (le
     },
 ];
 
-const teachersColumns = (addStudents: (teacherId: string) => void): ColumnDef<Teachers>[] => [
+interface Teacher {
+    id: string
+    firstname: string
+    lastname: string
+    lessons: { title: string }[]
+    students: { firstname: string }[]
+}
+  
+interface FlattenedRow {
+    teacherId: string
+    firstname: string
+    lastname: string
+    lessons?: string
+    student?: string
+}
+  
+const flattenData = (teachers: Teacher[]): FlattenedRow[] => {
+    const flattened: FlattenedRow[] = []
+  
+    teachers.forEach((teacher) => {
+      const lessons = teacher.lessons.map((lesson) => lesson.title).join(", ")
+  
+      if (teacher.students.length === 0) {
+        flattened.push({
+          teacherId: teacher.id,
+          firstname: teacher.firstname,
+          lastname: teacher.lastname,
+          lessons: lessons,
+          student: "",
+        })
+      } else {
+        teacher.students.forEach((student) => {
+          flattened.push({
+            teacherId: teacher.id,
+            firstname: teacher.firstname,
+            lastname: teacher.lastname,
+            lessons: lessons,
+            student: student.firstname,
+          })
+        })
+      }
+    })
+  
+    return flattened
+}
+  
+const teachersColumns = (): ColumnDef<FlattenedRow>[] => [
     {
-        accessorKey: "index",
-        header: "№",
-        cell: ({ row, table }) => {
-            const pageIndex = table.getState().pagination.pageIndex;
-            const globalIndex = pageIndex + row.index;
-        
-            return (
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
-                    {globalIndex}
-                </span>
-            );
-        },
-        enableColumnFilter: false,
-        size: 30,
-        minSize: 30,
-        maxSize: 30,
-        meta: {
-            className: "text-center" as string,
-        },
+      accessorKey: "index",
+      header: "№",
+      cell: ({ row, table }) => {
+        const pageIndex = table.getState().pagination.pageIndex
+        const pageSize = table.getState().pagination.pageSize
+        const index = pageIndex * pageSize + row.index + 1
+  
+        return <span className="text-sm font-medium text-gray-900 dark:text-white">{index}</span>
+      },
+      enableColumnFilter: false,
+      size: 30,
+      minSize: 30,
+      maxSize: 30,
+      meta: {
+        className: "text-center" as string,
+      },
     },
     {
-        id: "fullname",
-        header: "Fullname",
-        cell: ({ row }) => {
-            const user = row.original;
-            const firstname = user.firstname
-            const lastname = user.lastname
-            return(
-                <span>
-                    {lastname.substring(0, 1)}. {firstname}
-                </span>
-            )
-        },
-        size: 150,
-        minSize: 150,
-        maxSize: 150,
+      id: "fullname",
+      header: "FULLNAME",
+      accessorFn: (row) => `${row.lastname} ${row.firstname}`,
+      cell: ({ row }) => {
+        const { firstname, lastname } = row.original
+        return (
+          <span>
+            {lastname.substring(0, 1)}. {firstname}
+          </span>
+        )
+      },
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
+      enableColumnFilter: true,
+      filterFn: (row, columnId, filterValue) => {
+        const { firstname, lastname } = row.original
+        const fullName = `${lastname} ${firstname}`.toLowerCase()
+        return fullName.includes(filterValue.toLowerCase())
+      },
     },
     {
-        accessorKey: "email",
-        header: "Email",
-        cell: ({ getValue }) => {
-            return(
-                <span>
-                    {getValue<string>()}
-                </span>
-            )
-        },
-        size: 150,
-        minSize: 150,
-        maxSize: 150,
-        enableColumnFilter: false,
+      id: "lessons",
+      header: "LESSONS",
+      accessorFn: (row) => row.lessons,
+      cell: ({ row }) => {
+        const { lessons } = row.original
+        return <span className="text-sm text-slate-700">{lessons}</span>
+      },
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
+      enableColumnFilter: true,
     },
     {
-        id: "lessons",
-        header: "Lessons",
-        cell: ({ row }) => {
-            const { lessons } = row.original;
-        
-            return (
-                <ul className="text-sm text-slate-700 px-2">
-                    {lessons?.length === 0 ? (
-                        <span className="bg-red-300 p-2 px-5 rounded-lg text-white hover:bg-red-400">Lesson not found</span>
-                    ) : (
-                        lessons?.map((lesson, index) => (
-                            <li className="bg-blue-400 text-white rounded-lg my-2 p-2 px-5 hover:bg-blue-500" key={index}>{lesson.title}</li>
-                        ))
-                    )}
-                </ul>
-            );
-        },
-        size: 150,
-        minSize: 150,
-        maxSize: 150,
+      id: "student",
+      header: "STUDENT",
+      accessorKey: "student",
+      cell: ({ row }) => {
+        const { student } = row.original
+        return student ? <span className="text-sm text-slate-700">{student}</span> : null
+      },
+      size: 150,
+      minSize: 150,
+      maxSize: 150,
+      enableColumnFilter: true,
     },
-    {
-        id: "students",
-        header: "Students",
-        cell: ({ row }) => {
-            const teacherId = row.original.id;
-            return (
-                <Button onClick={() => addStudents(teacherId)} className="bg-green-500 hover:bg-green-600 text-white">Students</Button>
-            );
-        },
-        meta: {
-            className: 'text-center' as string
-        },
-        size: 150,
-        minSize: 150,
-        maxSize: 150,
-    },
-];
+]
 
 const quizColumns = (editQuestionAnswer: (quizId: string) => void): ColumnDef<Quiz>[] => [
     {
@@ -452,9 +473,102 @@ const quizColumns = (editQuestionAnswer: (quizId: string) => void): ColumnDef<Qu
     },
 ];
 
+const topicColumns = (editTopic: (topicId: string) => void): ColumnDef<Topic>[] => [
+    {
+        accessorKey: "index",
+        header: "№",
+        cell: ({ row }) => {
+
+        
+            return (
+                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {row.index +1}
+                </span>
+            );
+        },
+        enableColumnFilter: false,
+        size: 30,
+        minSize: 30,
+        maxSize: 30,
+        meta: {
+            className: "text-center" as string,
+        },
+    },
+    {
+        accessorKey: "title",
+        header: "Title",
+        cell: ({ getValue }) => {
+            return(
+                <span>
+                    {getValue<string>()}
+                </span>
+            )
+        },
+        size: 150,
+        minSize: 150,
+        maxSize: 150,
+        enableColumnFilter: true,
+    },
+    {
+        accessorKey: "description",
+        header: "Description",
+        cell: ({ getValue }) => {
+            return(
+                <span>
+                    {getValue<string>()}
+                </span>
+            )
+        },
+        size: 150,
+        minSize: 150,
+        maxSize: 150,
+        enableColumnFilter: true,
+    },
+    {
+        id: "lesson",
+        header: "Lesson",
+        cell: ({ row }) => {
+            const lesson = row.original.lesson;
+            return (
+                <ul className="text-sm text-slate-700 px-2">
+                    <li className="rounded-lg my-2 p-2 px-5">{lesson?.title}</li>
+                </ul>
+            );
+        },
+        size: 150,
+        minSize: 150,
+        maxSize: 150,
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+            const topic = row.original;
+            const topicId = topic.id
+        
+            const actions = [
+                {
+                    label: <Edit width={16} height={16}/>,
+                    onClick: () => editTopic(topicId),
+                    className: "text-slate-500",
+                    tooltip: "Edit question and answers"
+                },
+            ];
+        
+            return <Actions actions={actions} />;
+        },
+        enableColumnFilter: false,
+        size: 50,
+        minSize: 50,
+        maxSize: 50,
+    },
+];
+
 export { 
     userColumns,
     lessonColumns,
     teachersColumns,
-    quizColumns
+    quizColumns,
+    topicColumns,
+    flattenData
 };

@@ -11,11 +11,9 @@ import {
 } from "lucide-react"
 import { ROLE } from "@/utils/params"
 import { NavMain } from "@/components/layouts/navbar"
-import { NavUser } from "@/components/layouts/user-toggle"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -33,18 +31,18 @@ import { StudentNav } from "./student-nav"
 const data = {
   system: [
     {
-      title: "Generator",
+      title: "AI exam generator",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "PDF generate",
+          title: "Generate questions",
           url: "/system/generate",
           role: [ROLE.admin, ROLE.teacher],
         },
         {
-          title: "Quiz list",
+          title: "Edit questions",
           url: "/system/quiz",
           role: [ROLE.admin, ROLE.teacher]
         }
@@ -56,7 +54,7 @@ const data = {
       name: "Users",
       url: "/system/user",
       icon: User,
-      role: [ROLE.admin, ROLE.teacher]
+      role: [ROLE.admin]
     },
     {
       name: "Students",
@@ -71,7 +69,13 @@ const data = {
       role: [ROLE.admin]
     },
     {
-      name: "Allocate",
+      name: "Topic",
+      url: "/system/topic",
+      icon: Layers,
+      role: [ROLE.admin]
+    },
+    {
+      name: "Class",
       url: "/system/allocate",
       icon: RefreshCcwDot,
       role: [ROLE.admin]
@@ -105,7 +109,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroup className="group-data-[collapsible=icon]">
               <SidebarGroupLabel>        
                 {auth?.role?.name === ROLE.admin || auth?.role?.name === ROLE.teacher
-                  ? "Core"
+                  ? "Management"
                   : ""}
               </SidebarGroupLabel>
               <SidebarMenu>
@@ -130,9 +134,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <StudentNav/>
           )}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser/>
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

@@ -33,7 +33,7 @@ const Page = () => {
     const dispatch = useDispatch();
     const { toast } = useToast();
     const query = useSelector(selectQuery);
-    const { data, error, isLoading } = useGetAllQuizzesQuery(formatQuery(query));
+    const { data, error, isLoading } = useGetAllQuizzesQuery();
         const [updateContent, updateContentResponse] = useUpdateQuizMutation();
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<Quiz>();
@@ -107,7 +107,7 @@ const Page = () => {
                 title: "Failed",
                 description: "Change quiz content",
             });
-            console.error('Failed to update quiz:', error);
+            console.log('Failed to update quiz:', error);
         } finally {
             setDialogOpen(false);
         }
@@ -202,8 +202,8 @@ const Page = () => {
                                 </div>
                             </div>
 
-                            <div className="w-full pt-5 flex gap-x-5">
-                                <Button type="submit" disabled={isSubmitting} className="w-full">
+                            <div className="w-full pb-5 flex justify-center gap-x-5">
+                                <Button type="submit" disabled={isSubmitting} className="py-5 ">
                                     {isSubmitting ? 'Saving changes' : 'Save changes'}
                                 </Button>
                             </div>

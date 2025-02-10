@@ -170,6 +170,14 @@ export const lessonApi = api.injectEndpoints({
             }),
             invalidatesTags: (result, error, { id }) => [{ type: "Quizzes", id }],
         }),
+        getAllTopics: build.query<Topic[], void>({
+            query: () => `topics`,
+            transformResponse: (response: { topics: Topic[] }) => response.topics,
+            providesTags: (result) =>
+                result?.length
+                    ? [...result.map(({ id }) => ({ type: "Topics" as const, id })), { type: "Topics", id: "LIST" }]
+                    : [{ type: "Topics", id: "LIST" }],
+        }),
     }),
     overrideExisting: true,
 });
@@ -189,5 +197,6 @@ export const {
     useRemoveLessonTeacherMutation,
     useGetAllQuizzesQuery,
     useSaveQuizMutation,
-    useUpdateQuizMutation
+    useUpdateQuizMutation,
+    useGetAllTopicsQuery,
 } = lessonApi;

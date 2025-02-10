@@ -23,6 +23,13 @@ import {
     passwordSchema, 
     userAddInfoSchema 
 } from '@/utils/validation';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { 
     Form, 
     FormControl, 
@@ -54,6 +61,8 @@ const Page = () => {
             lastname: "",
             phone: "",
             email: "",
+            password: "",
+            role_id: "",
         },
     });
 
@@ -89,6 +98,8 @@ const Page = () => {
             role: '',
         },
     });
+
+    const filteredRoles = roles?.filter(role => role.name !== 'Admin');
 
     const pagination = useMemo(() => {
         if (data?.pagination) return data.pagination;
@@ -140,6 +151,7 @@ const Page = () => {
     }; 
 
     const onSubmit = async (values: z.infer<typeof userSchema>) => {
+        console.log(values)
         try {
             if (isEditing && editingUser) {
                 const payload = { id: editingUser.id, body: values };
@@ -383,6 +395,19 @@ const Page = () => {
                             />
                             <FormField
                                 control={form.control}
+                                name="firstname"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-slate-700 dark:text-gray-50">Firstname</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Firstname" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
                                 name="lastname"
                                 render={({ field }) => (
                                     <FormItem>
@@ -396,12 +421,25 @@ const Page = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="firstname"
+                                name="role_id"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-slate-700 dark:text-gray-50">Firstname</FormLabel>
+                                        <FormLabel className="text-slate-700 dark:text-gray-50">Select Role</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Firstname" {...field} />
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a role" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {filteredRoles?.map((role, index) => (
+                                                        <SelectItem key={index} value={String(role.id)}>
+                                                            {role.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -428,6 +466,19 @@ const Page = () => {
                                         <FormLabel className="text-slate-700 dark:text-gray-50">Email address</FormLabel>
                                         <FormControl>
                                             <Input placeholder="Email address" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-slate-700 dark:text-gray-50">Password</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter new password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -488,47 +539,6 @@ const Page = () => {
                 </div>
             </MainDialog>
 
-            {/* add or edit user's more information */}
-            <MainDialog
-                title="Information"
-                description="change user's additional information"
-                isOpen={isAdditionalInfoDialog}
-                onClose={() => {
-                    setAdditionalInfoDialog(false)
-                    userAddRoleForm.reset();
-                }}
-            >
-                <div className=''>
-                    <Form {...userAddRoleForm}>
-                        <form onSubmit={userAddRoleForm.handleSubmit(onSubmitAddInfo)} className="space-y-2 w-full" autoComplete='off'>
-                            <FormField
-                                control={userAddRoleForm.control}
-                                name="role"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-slate-700 dark:text-gray-50">Select Role</FormLabel>
-                                        <FormControl>
-                                            <Combobox
-                                                options={roles?.map((role: { id: string; name: string; }) => ({
-                                                    value: role.id,
-                                                    label: role.name,
-                                                })) || []}
-                                                defaultValue={field.value as string}
-                                                placeholder="Select a role"
-                                                onChange={(value) => field.onChange(value)}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <div className="w-full pt-5">
-                                <Button type="submit" className='w-full'>{userRoleLoading ? 'Assigning...' : 'Assign role'}</Button>
-                            </div>
-                        </form>
-                    </Form>
-                </div>
-            </MainDialog>
             <AlerDialog
                 title="Delete user"
                 description="You are about to delete the user. Please note that it cannot be restored!"

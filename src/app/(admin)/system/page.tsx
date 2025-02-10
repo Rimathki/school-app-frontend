@@ -11,7 +11,7 @@ import StudentPage from '@/components/sections/student';
 const AdminPage = () => {
   const auth = useSelector(selectAuth)
   const breadcrumbsData = [
-    { name: "Үзүүлэлт", path: "main" },
+    { name: "System", path: "main" },
   ];
 
   return (

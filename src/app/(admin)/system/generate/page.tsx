@@ -83,38 +83,42 @@ const Page = () => {
 
     const onSubmit = async (data: z.infer<typeof pdfGenerateSchema>) => {
         setIsLoading(true);
-    
+
         try {
-            const fileName = data.file.name;
+            const file = data.file;
             const topic = data.topic;
             const lesson = data.lesson;
             const quizTime = data.time;
             const quizNumber = data.number;
             const level = data.level;
-            const answer_type = data.answer_type
-            const filePath = `/Users/bayardavaaikhtamir/Downloads/${fileName}`;
+            const answer_type = data.answer_type;
 
-            const quiz = await generateQuiz(filePath, topic, lesson, quizTime, quizNumber, level, answer_type);
-            console.log(quiz)
-            if (quiz?.questions) {
-                console.log('Generated Quiz:', quiz.questions);
-                setGeneratedQuiz(quiz?.questions)
-                toast({
-                    title: "Quiz Generated Successfully",
-                    description: "Check the console for quiz questions.",
-                });
-            } else {
-                toast({
-                    title: "Error",
-                    description: "Failed to generate quiz. Please check the input and try again.",
-                    variant: "destructive",
-                });
-            }
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const fileContent = event.target?.result as string;
+
+                const quiz = await generateQuiz(fileContent, topic, lesson, quizTime, quizNumber, level, answer_type);
+                console.log(quiz);
+                if (quiz?.questions) {
+                    console.log('Generated Quiz:', quiz.questions);
+                    setGeneratedQuiz(quiz?.questions);
+                    toast({
+                        title: "Quiz Generated Successfully",
+                        description: "Check the console for quiz questions.",
+                    });
+                } else {
+                    toast({
+                        title: "Error",
+                        description: "Failed to generate quiz. Please check the input and try again.",
+                        variant: "destructive",
+                    });
+                }
+            };
+            reader.readAsDataURL(file);
         } catch (error) {
-            console.error("Error generating quiz:", error);
             toast({
                 title: "Error",
-                description: "Failed to generate quiz. Please try again.",
+                description: `Failed to generate quiz. Please try again. ${error}`,
                 variant: "destructive",
             });
         } finally {
@@ -174,7 +178,7 @@ const Page = () => {
             <div className="flex-shrink-0">
                 <SideHeader breadcrumbs={[{ name: 'System', path: '/system' }, { name: 'Generate quiz', path: 'main' }]} />
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1">
                 <ResizablePanelGroup
                     direction="horizontal"
                     className="border md:min-w-[300px] md:w-full"
@@ -188,7 +192,7 @@ const Page = () => {
                                         name="answer_type"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Answer type</FormLabel>
+                                                <FormLabel>Exam type</FormLabel>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl>
                                                         <SelectTrigger>
@@ -263,7 +267,7 @@ const Page = () => {
                                         name="number"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>How much quizs</FormLabel>
+                                                <FormLabel>Number of questions</FormLabel>
                                                 <FormControl>
                                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                         <FormControl>
@@ -317,7 +321,7 @@ const Page = () => {
                                         name="level"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Level</FormLabel>
+                                                <FormLabel>Difficulty level</FormLabel>
                                                 <FormControl>
                                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                         <FormControl>
@@ -376,7 +380,7 @@ const Page = () => {
                                 <div className="px-6 py-5 space-y-6 min-h-[90%] max-h-[80%]">
                                     {isGeneratedQuiz.length > 0 ? (
                                         isGeneratedQuiz.map((quiz, index) => (
-                                            <div key={index || quiz.id} className="border rounded-lg p-4 shadow-md">
+                                            <div key={index} className="border rounded-lg p-4 shadow-md">
                                                 <h3 className="text-lg font-semibold mb-3">{quiz.question}</h3>
                                                 <ul className="space-y-2">
                                                     {quiz.options.map((option: string, i: number) => (
@@ -403,7 +407,7 @@ const Page = () => {
                             <div className="flex justify-center mt-5">
                                 {isGeneratedQuiz.length > 0 && (
                                     <Button onClick={handleSaveQuiz} disabled={isSaving}>
-                                        {isSaving ? "Saving quiz..." : "Save generated quiz"}
+                                        {isSaving ? "Saving questions..." : "Save questions"}
                                     </Button>
                                 )}
                             </div>

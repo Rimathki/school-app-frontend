@@ -26,6 +26,8 @@ export const userSchema = z.object({
     firstname: z.string().min(2, { message: "Please fill in the lastname field!" }),
     lastname: z.string().min(2, { message: "Please fill in the firstname field!" }),
     email: z.string().email({ message: "Please enter a valid email address!" }),
+    password: z.string().min(8, { message: "Please enter a valid password!" }),
+    role_id: z.string().min(1, { message: "Please enter a valid role!" }),
     phone: z.string().min(8, { message: "The phone number must be at least 8 digits long." }).refine((val) => !isNaN(Number(val)), { message: "The phone number must be numbers only." }),
 });
 
@@ -46,6 +48,12 @@ export const lessonSchema = z.object({
 export const topicSchema = z.object({
     title: z.string().min(2, { message: "Please fill in the topic name field!" }),
     description: z.string()
+});
+
+export const addTopicSchema = z.object({
+    title: z.string().min(2, { message: "Please fill in the topic name field!" }),
+    description: z.string(),
+    lesson_id: z.string().min(1, { message: "Please select a lesson." }),
 });
 
 export const lessonTeacherSchema = z.object({
@@ -71,12 +79,8 @@ export const pdfGenerateSchema = z.object({
 });
 
 export const allocateStudents = z.object({
-    user_id: z.union([
-        z.string(),
-        z.number(),
-    ]).refine((value) => String(value).length >= 1, {
-        message: "Select a valid students",
-    }),
+    student_id: z.string().min(1, { message: "Please enter a valid student!" }),
+    teacher_id: z.string().min(1, { message: "Please enter a valid teacher!" }),
 });
 
 export const quizContentSchema = z.object({

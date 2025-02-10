@@ -61,6 +61,7 @@ const Datatable = <TData,>({
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
+
         debugTable: false
     });
 

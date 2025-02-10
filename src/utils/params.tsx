@@ -6,15 +6,17 @@ const ROLE = {
 }
 
 const DURATION = [
-    { time:30, text:'30 sec'},
-    { time:60, text:'1 min'},
-    { time:90, text:'1 min 30 sec'},
-    { time:120, text:'2 min'},
-    { time:150, text:'2 min 30 sec'},
-    { time:180, text:'3 min'},
-    { time:210, text:'3 min 30 sec'},
-    { time:240, text:'4 min'}
-]
+    { time: 120, text: '2 min' },
+    { time: 180, text: '3 min' },
+    { time: 240, text: '4 min' },
+    { time: 300, text: '5 min' },  
+    { time: 600, text: '10 min' }, 
+    { time: 900, text: '15 min' }, 
+    { time: 1200, text: '20 min' },
+    { time: 1800, text: '30 min' },
+    { time: 2700, text: '45 min' } 
+];
+
 
 const QUIZ_NUMBER = [
     { number:10, value:'10 questions'},
@@ -28,14 +30,14 @@ const QUIZ_NUMBER = [
 ]
 
 const LEVEL = [
-    "Basic recall questions",
-    "Application-level questions",
-    "Advanced critical thinking questions"
+    "Basic",
+    "Intermediate",
+    "Advanced"
 ]
 
 const ANSWERTYPE = [
-    "Yes/No",
-    "Four answer"
+    "True/False",
+    "Multiple choice"
 ]
 
 export {

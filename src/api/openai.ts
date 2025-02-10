@@ -1,30 +1,37 @@
 'use server';
 
-import fs from 'fs';
-import path from 'path';
 import pdf from 'pdf-parse';
 import { LEVEL } from '@/utils/params';
 
-export const generateQuiz = async (filePath: string, topic: string, lesson: string, quizTime: string, quizNumber: string, level: string, answer_type: string) => {
+export const generateQuiz = async (
+    fileBase64: string, 
+    topic: string, 
+    lesson: string, 
+    quizTime: string, 
+    quizNumber: string, 
+    level: string, 
+    exam_type: string
+) => {
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
     const apiKey = process.env.OPENAI_API_KEY;
 
     try {
-        const quizLevel = LEVEL[Number(level)]
-        const absoluteFilePath = path.resolve(filePath);
-        if (!fs.existsSync(absoluteFilePath)) {
-            throw new Error(`File not found: ${absoluteFilePath}`);
-        }
+        const quizLevel = LEVEL[Number(level)];
 
-        const dataBuffer = fs.readFileSync(absoluteFilePath);
-        const pdfData = await pdf(dataBuffer);
+        const base64Data = fileBase64.split(';base64,').pop();
+        if (!base64Data) throw new Error('Invalid file format');
+
+        console.log()
+        const fileBuffer = Buffer.from(base64Data, 'base64');
+
+        const pdfData = await pdf(fileBuffer);
         const pdfText = pdfData.text;
-        console.log(answer_type)
+
         const prompt = `
             Generate a multiple-choice quiz based on the following content. Requirements:
-            - Create question answer type is ${answer_type}
-            - Create ${quizNumber ? quizNumber : '10'} que  stions
-            - Each question should have ${answer_type === 'Yes/No' ? '2 options: "Yes" and "No"' : '4 options'}
+            - Create question answer type is ${exam_type}
+            - Create ${quizNumber ? quizNumber : '10'} questions
+            - Each question should have ${exam_type === 'Yes/No' ? '2 options: "Yes" and "No"' : '4 options'}
             - Clearly mark the correct answer
             - Ensure questions test comprehensive understanding
             - The quiz should be of difficulty (${quizLevel}).
@@ -53,26 +60,21 @@ export const generateQuiz = async (filePath: string, topic: string, lesson: stri
         });
 
         const responseData = await response.json();
-
         if (responseData.error) {
             throw new Error(responseData.error.message);
         }
 
         const content = responseData.choices[0]?.message?.content;
-
         if (!content) {
             throw new Error('No content returned from API.');
         }
-        const cleanedContent = content.replace(/```json|```/g, '').trim();
 
+        const cleanedContent = content.replace(/```json|```/g, '').trim();
         const quiz = JSON.parse(cleanedContent);
 
         return quiz;
     } catch (error) {
-        if (error instanceof Error) {
-          console.error('Error:', error.message);
-        } else {
-          console.error('Unexpected error:', error);
-        }
+        console.error('Error:', error instanceof Error ? error.message : error);
+        return null;
     }
 };

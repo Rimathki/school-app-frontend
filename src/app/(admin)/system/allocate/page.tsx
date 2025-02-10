@@ -9,7 +9,7 @@ import {
 } from '@/api/users';
 import { useSelector } from 'react-redux';
 import { formatQuery } from '@/utils/format';
-import { teachersColumns } from '@/components/table/columns';
+import { flattenData, teachersColumns } from '@/components/table/columns';
 import Datatable from '@/components/table/datatable';
 import { Button } from '@/components/ui/button';
 import MainDialog from '@/components/elements/main-dialog';
@@ -33,7 +33,7 @@ import { useToast } from '@/hooks/use-toast';
 const Page = () => {
     const breadcrumbsData = [
         { name: "System", path: "/system" },
-        { name: "Allocate students", path: "main" },
+        { name: "Class management", path: "main" },
     ];
 
     const dispatch = useAppDispatch();
@@ -54,7 +54,8 @@ const Page = () => {
     const addStudentForm = useForm<z.infer<typeof allocateStudents>>({
         resolver: zodResolver(allocateStudents),
         defaultValues: {
-            user_id: '',
+            teacher_id: '',
+            student_id: '',
         },
     });
 
@@ -69,8 +70,8 @@ const Page = () => {
         email: teacher.email,
         phone: teacher.phone,
         role: teacher.role,
-        lessons: teacher.lessons,
-        students: teacher.students,
+        lessons: teacher.lessons || [],
+        students: teacher.students || [],
     })) || [];
 
     const availableStudents = useMemo(() => {
@@ -94,20 +95,21 @@ const Page = () => {
         [dispatch]
     );
 
-    const addStudents = (teacherId: string) => {
-        setSelectedTeacher(teacherId);
+    const addStudents = () => {
         setAddStudentDialog(true);
     };
 
     const handleAddStudents = async (data: z.infer<typeof allocateStudents>) => {
-        if (selectedTeacher && data.user_id) {
+        console.log(data)
+        if (data.teacher_id && data.student_id) {
             try {
                 const response = await addStudentToTeacher({
-                    teacherId: selectedTeacher,
-                    studentId: String(data.user_id),
+                    teacherId: data.teacher_id,
+                    studentId: data.student_id,
                 }).unwrap();
 
                 if (response.success) {
+                    setAddStudentDialog(false);
                     toast({
                         title: 'Success',
                         description: response.message,
@@ -149,6 +151,8 @@ const Page = () => {
         }    
     }
 
+    const flattenedData = data?.teachers ? flattenData(tableData) : [];
+
     return (
         <div className="flex flex-col h-screen">
             <div className="flex-shrink-0">
@@ -156,8 +160,8 @@ const Page = () => {
             </div>
             <div className="flex-auto rounded-md max-h-full overflow-y-auto px-10">
                 <Datatable
-                    tableData={tableData}
-                    columns={teachersColumns(addStudents)}
+                    tableData={flattenedData}
+                    columns={teachersColumns()}
                     isLoading={isLoading}
                     error={!!error}
                     pagination={{
@@ -167,8 +171,8 @@ const Page = () => {
                 >
                     <div className="w-full flex justify-end">
                         <div className="flex gap-x-2">
-                            <Button className="w-full bg-blue-400 hover:bg-blue-500 px-10" onClick={() => {}}>
-                                Search teacher
+                            <Button className="w-full bg-blue-400 hover:bg-blue-500 px-10" onClick={() => addStudents()}>
+                                Management student
                             </Button>
                             <Button className="w-full bg-green-500 hover:bg-green-600 px-10" onClick={() => {}}>
                                 Export
@@ -197,14 +201,14 @@ const Page = () => {
                         <form onSubmit={addStudentForm.handleSubmit(handleAddStudents)} className="space-y-2">
                             <FormField
                                 control={addStudentForm.control}
-                                name="user_id"
+                                name="student_id"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Select student</FormLabel>
                                         <FormControl>
                                             <Combobox
                                                 options={availableStudents?.map((student) => ({
-                                                    value: student.id,
+                                                    value: String(student.id),
                                                     label: `${student.lastname.substring(0, 1)}. ${student.firstname}`,
                                                 })) || []}
                                                 defaultValue={field.value as string}
@@ -216,12 +220,32 @@ const Page = () => {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                control={addStudentForm.control}
+                                name="teacher_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Select teacher</FormLabel>
+                                        <FormControl>
+                                            <Combobox
+                                                options={data?.teachers?.map((teacher) => ({
+                                                    value: String(teacher.id),
+                                                    label: `${teacher.lastname.substring(0, 1)}. ${teacher.firstname}`,
+                                                })) || []}
+                                                defaultValue={field.value as string}
+                                                placeholder="Select a teacher"
+                                                onChange={(value) => field.onChange(value)}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <Button type="submit" className="w-full">Add student</Button>
                         </form>
                     </Form>
 
-                    {/* Table for Existing Students of the Teacher */}
-                    <div>
+                    {/* <div>
                         <h3 className="text-lg font-bold mb-2">Current Students</h3>
                         <Table>
                             <TableHeader>
@@ -252,7 +276,7 @@ const Page = () => {
                                     ))}
                             </TableBody>
                         </Table>
-                    </div>
+                    </div> */}
                 </div>
             </MainDialog>
         </div>
