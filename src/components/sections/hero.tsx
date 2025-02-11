@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { GraduationCap, Users, BarChart3, Brain, Trophy, Gamepad2, Zap, BookOpen, PenTool } from "lucide-react"
@@ -11,6 +12,7 @@ const fadeIn = {
 }
 
 const Hero = () => {
+  const router = useRouter()
   const tests = [
     { id: 1, title: "Math Quiz", description: "Test your algebra skills" },
     { id: 2, title: "Science Test", description: "Explore biology concepts" },
@@ -24,8 +26,7 @@ const Hero = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-blue-50 to-cyan-50">
-      {/* Hero Section */}
-      <section className="px-4 pt-20 pb-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <section className="px-4 pt-32 pb-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 30 }}
@@ -33,16 +34,17 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-            <span className="block text-purple-600">AI-Powered Quizzes & Games</span>
-            <span className="block text-blue-600">Learn Smarter, Play Harder!</span>
+            <span className="block text-purple-600">Revolutionize Learning with AI & Gamification</span>
           </h1>
           <p className="max-w-2xl mx-auto mt-6 text-xl text-gray-600">
-            Revolutionizing Learning with AI & Gamification
+            AI-Powered Quizzes & Games, Learn Smarter, Play Harder!
           </p>
+          <div className="mt-8 space-x-4">
+            <Button className="bg-blue-400 hover:bg-blue-500 px-5" onClick={() => router.push('/login')}>Sign in</Button>
+          </div>
         </motion.div>
       </section>
 
-      {/* Tests Section */}
       <section className="py-16 bg-white">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Available Tests</h2>
@@ -63,7 +65,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Items Section */}
       <section className="py-16 bg-gray-50">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Learning Tools</h2>
@@ -86,7 +87,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* User Types Section */}
       <section className="py-16 bg-gradient-to-r from-purple-100 via-blue-100 to-cyan-100">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-3">
@@ -125,7 +125,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-16">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
@@ -134,7 +133,7 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-gray-900">Why You'll Love It?</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Why You&apos;ll Love It?</h2>
           </motion.div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -176,7 +175,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 bg-gradient-to-r from-purple-600 to-blue-600">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
