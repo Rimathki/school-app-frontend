@@ -83,7 +83,7 @@ const Page = () => {
 
     const onSubmit = async (data: z.infer<typeof pdfGenerateSchema>) => {
         setIsLoading(true);
-
+        
         try {
             const file = data.file;
             const topic = data.topic;
@@ -122,9 +122,11 @@ const Page = () => {
                 variant: "destructive",
             });
         } finally {
-            setIsLoading(false);
+            
         }
     };
+
+    console.log(isLoading, isSaving);
 
     const handleAnswerClick = (questionIndex: number, answer: string) => {
         setSelectedAnswers((prev) => ({ ...prev, [questionIndex]: answer }));

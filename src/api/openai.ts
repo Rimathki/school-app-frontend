@@ -29,7 +29,7 @@ export const generateQuiz = async (
 
         const prompt = `
             Generate a multiple-choice quiz based on the following content. Requirements:
-            - Create question answer type is ${exam_type}
+            - Create quiz type is ${exam_type}
             - Create ${quizNumber ? quizNumber : '10'} questions
             - Each question should have ${exam_type === 'Yes/No' ? '2 options: "Yes" and "No"' : '4 options'}
             - Clearly mark the correct answer
