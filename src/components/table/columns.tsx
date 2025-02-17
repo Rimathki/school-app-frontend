@@ -7,8 +7,7 @@ import {
     StickyNote,
     CirclePlus
 } from 'lucide-react'
-import { Button } from "../ui/button";
-import { User, Lesson, Teachers, Quiz, Topic } from '@/utils/types';
+import { User, Lesson,  Quiz, Topic } from '@/utils/types';
 import { LEVEL } from "@/utils/params";
 
 const userColumns = (editHandler: (user: User) => void, deleteHandler: (userId: string) => void, changePassword: (user: User) => void, userAdditionalInfo: (user: User) => void): ColumnDef<User>[] => [
@@ -407,6 +406,7 @@ const quizColumns = (editQuestionAnswer: (quizId: string) => void): ColumnDef<Qu
         header: "topics",
         cell: ({ getValue }) => {
             return(
+
                 <span>
                     {getValue<string>()}
                 </span>
@@ -525,7 +525,7 @@ const topicColumns = (editTopic: (topicId: string) => void): ColumnDef<Topic>[] 
         enableColumnFilter: true,
     },
     {
-        id: "lesson",
+        accessorKey: "lesson.title",
         header: "Lesson",
         cell: ({ row }) => {
             const lesson = row.original.lesson;
@@ -538,6 +538,13 @@ const topicColumns = (editTopic: (topicId: string) => void): ColumnDef<Topic>[] 
         size: 150,
         minSize: 150,
         maxSize: 150,
+        enableColumnFilter: true,
+        // filterFn: (row, columnId, filterValue) => {
+        //     console.log(row.original)
+        //   const { lesson } = row.original
+        //   const lessonTitle = `${lesson.title}`.toLowerCase()
+        //   return lesson.includes(filterValue.toLowerCase())
+        // },
     },
     {
         id: "actions",

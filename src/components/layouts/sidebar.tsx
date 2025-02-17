@@ -99,7 +99,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </div>
               <div className="grid flex-1 text-left text-lg leading-tight uppercase">
                 <h1 className="truncate font-semibold">
-                  School app
+                  Ai-driven quizzes
                 </h1>
               </div>
             </SidebarMenuButton>

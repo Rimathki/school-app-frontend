@@ -34,13 +34,13 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-            <span className="block text-purple-600">Revolutionize Learning with AI & Gamification</span>
+            <span className="block text-purple-600">Learn Smarter, Play Harder!</span>
           </h1>
           <p className="max-w-2xl mx-auto mt-6 text-xl text-gray-600">
-            AI-Powered Quizzes & Games, Learn Smarter, Play Harder!
+            Revolutionize learning with AI & Gamification 
           </p>
           <div className="mt-8 space-x-4">
-            <Button className="bg-blue-400 hover:bg-blue-500 px-5" onClick={() => router.push('/login')}>Sign in</Button>
+            <Button className="bg-blue-400 hover:bg-blue-500 px-5" onClick={() => router.push('/login')}>Demo</Button>
           </div>
         </motion.div>
       </section>

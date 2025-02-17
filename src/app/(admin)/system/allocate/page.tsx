@@ -172,7 +172,7 @@ const Page = () => {
                     <div className="w-full flex justify-end">
                         <div className="flex gap-x-2">
                             <Button className="w-full bg-blue-400 hover:bg-blue-500 px-10" onClick={() => addStudents()}>
-                                Management student
+                                Manage class
                             </Button>
                             <Button className="w-full bg-green-500 hover:bg-green-600 px-10" onClick={() => {}}>
                                 Export
@@ -201,27 +201,6 @@ const Page = () => {
                         <form onSubmit={addStudentForm.handleSubmit(handleAddStudents)} className="space-y-2">
                             <FormField
                                 control={addStudentForm.control}
-                                name="student_id"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Select student</FormLabel>
-                                        <FormControl>
-                                            <Combobox
-                                                options={availableStudents?.map((student) => ({
-                                                    value: String(student.id),
-                                                    label: `${student.lastname.substring(0, 1)}. ${student.firstname}`,
-                                                })) || []}
-                                                defaultValue={field.value as string}
-                                                placeholder="Select a student"
-                                                onChange={(value) => field.onChange(value)}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={addStudentForm.control}
                                 name="teacher_id"
                                 render={({ field }) => (
                                     <FormItem>
@@ -234,6 +213,27 @@ const Page = () => {
                                                 })) || []}
                                                 defaultValue={field.value as string}
                                                 placeholder="Select a teacher"
+                                                onChange={(value) => field.onChange(value)}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={addStudentForm.control}
+                                name="student_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Select student</FormLabel>
+                                        <FormControl>
+                                            <Combobox
+                                                options={availableStudents?.map((student) => ({
+                                                    value: String(student.id),
+                                                    label: `${student.lastname.substring(0, 1)}. ${student.firstname}`,
+                                                })) || []}
+                                                defaultValue={field.value as string}
+                                                placeholder="Select a student"
                                                 onChange={(value) => field.onChange(value)}
                                             />
                                         </FormControl>

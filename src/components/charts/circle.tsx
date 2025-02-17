@@ -19,35 +19,36 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  { browser: "chrome", visitors: 100, fill: "var(--color-chrome)" },
+  { browser: "safari", visitors: 100, fill: "var(--color-safari)" },
+  { browser: "firefox", visitors: 100, fill: "var(--color-firefox)" },
+  { browser: "edge", visitors: 100, fill: "var(--color-edge)" },
+  { browser: "other", visitors: 100, fill: "var(--color-other)" },
 ]
 
 const chartConfig = {
   visitors: {
-    label: "Visitors",
+    label: "Q1",
+    color: "hsl(var(--chart-1))",
   },
   chrome: {
-    label: "Chrome",
+    label: "Q1",
     color: "hsl(var(--chart-1))",
   },
   safari: {
-    label: "Safari",
+    label: "Q2",
     color: "hsl(var(--chart-2))",
   },
   firefox: {
-    label: "Firefox",
+    label: "Q3",
     color: "hsl(var(--chart-3))",
   },
   edge: {
-    label: "Edge",
+    label: "Q4",
     color: "hsl(var(--chart-4))",
   },
   other: {
-    label: "Other",
+    label: "Q5",
     color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig
@@ -60,8 +61,8 @@ const Circle = () => {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Monthly performance</CardTitle>
+        <CardDescription>January - 2025</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -102,7 +103,7 @@ const Circle = () => {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Total
                         </tspan>
                       </text>
                     )
@@ -115,10 +116,7 @@ const Circle = () => {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Top quizzes taken for the last month<TrendingUp className="h-4 w-4" />
         </div>
       </CardFooter>
     </Card>

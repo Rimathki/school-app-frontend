@@ -18,17 +18,17 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", desktop: 112 },
+  { month: "February", desktop: 275 },
+  { month: "March", desktop: 100 },
+  { month: "April", desktop: 50 },
+  { month: "May", desktop: 273 },
+  { month: "June", desktop: 150 },
 ]
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Total quizzes",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
@@ -37,8 +37,8 @@ const Vertical = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Number of quizzes</CardTitle>
+        <CardDescription>January - June 2025</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -61,10 +61,7 @@ const Vertical = () => {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Quizzes taken for the last 6 months <TrendingUp className="h-4 w-4" />
         </div>
       </CardFooter>
     </Card>
