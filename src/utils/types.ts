@@ -134,7 +134,7 @@ export interface QuizContent {
 
 export interface Quiz {
     id: string;
-    topic_id: string;
+    topic_id?: string;
     duration: number;
     level: string;
     content?: QuizContent[];
@@ -159,4 +159,10 @@ export interface QuizResponse {
 export interface AssignRolePayload {
     userId: string;
     roleId: string;
+}
+
+export interface ConfidenceResult {
+    average: number;
+    counts: Record<number, number>;
+    total: number;
 }

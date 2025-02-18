@@ -15,7 +15,7 @@ import { NavUser } from './user-toggle';
 
 type BreadcrumbProps = {
     name: string;
-    path: string; // Use "not linked" to indicate non-linkable items
+    path: string;
 };
 
 type SideHeaderProps = {

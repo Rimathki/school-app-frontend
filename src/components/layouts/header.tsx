@@ -40,6 +40,10 @@ const menuItems = [
         path: '/student/lesson',
         name: 'Lesson'
     },
+    {
+        path: '/student/games',
+        name: 'Flash cards'
+    },
 ];
 
 const Header = () => {

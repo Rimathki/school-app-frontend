@@ -230,6 +230,7 @@ const Page = () => {
         form.setValue('lastname', user.lastname);
         form.setValue('phone', user.phone);
         form.setValue('email', user.email);
+        form.setValue('password', '');
         setDialogOpen(true);
         setIsEditing(true)
         setEditingUser(user);

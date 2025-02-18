@@ -43,6 +43,8 @@ const Page = () => {
         }
     };
 
+    console.log(auth)
+
     const handleTopicClick = (topicTitle: string) => {
         // Set the selected topic and filter quizzes based on the topic
         setSelectedTopic(topicTitle);

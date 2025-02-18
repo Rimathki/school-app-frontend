@@ -22,6 +22,7 @@ interface Topics {
 }
 
 interface LessonState {
+    selectedLesson: string;
     query: QueryParams;
     loading: boolean;
     lessons: Lessons[];

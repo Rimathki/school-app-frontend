@@ -402,9 +402,10 @@ const quizColumns = (editQuestionAnswer: (quizId: string) => void): ColumnDef<Qu
         },
     },
     {
-        accessorKey: "topics",
+        accessorKey: "topic",
         header: "topics",
-        cell: ({ getValue }) => {
+        cell: ({ row, getValue }) => {
+            console.log(row.original)
             return(
 
                 <span>

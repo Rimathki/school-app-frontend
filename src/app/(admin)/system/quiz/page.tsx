@@ -34,11 +34,12 @@ const Page = () => {
     const { toast } = useToast();
     const query = useSelector(selectQuery);
     const { data, error, isLoading } = useGetAllQuizzesQuery();
-        const [updateContent, updateContentResponse] = useUpdateQuizMutation();
+    const [updateContent, updateContentResponse] = useUpdateQuizMutation();
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<Quiz>();
     const isSubmitting = updateContentResponse.isLoading;
 
+    console.log(data);
     // Initialize form with the content schema
     const form = useForm<z.infer<typeof contentSchema>>({
         resolver: zodResolver(contentSchema),
@@ -50,7 +51,8 @@ const Page = () => {
     const tableData = data?.quizzes.map((quiz) => ({
         id: quiz.id,
         level: quiz.level,
-        topics: quiz.topics?.title,
+        topic: quiz.topic?.title,
+        topic_id: quiz.topic_id,
         duration: quiz.duration,
     })) || [];
 

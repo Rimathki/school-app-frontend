@@ -159,6 +159,7 @@ const Page = () => {
             }).unwrap();
     
             if (response.success) {
+                setIsLoading(false);
                 setGeneratedQuiz([])
                 toast({
                     title: "Success",
